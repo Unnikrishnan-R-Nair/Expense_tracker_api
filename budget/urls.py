@@ -4,6 +4,8 @@ from budget import views
 
 from rest_framework.routers import DefaultRouter
 
+from rest_framework.authtoken.views import ObtainAuthToken
+
 router = DefaultRouter()
 
 # viewset view url
@@ -15,6 +17,10 @@ router.register("api/v1/expenses", views.ExpenseViewSetView, basename="expenses"
 urlpatterns = [
     # APIView urls
     path("api/budget/user/", views.SignUpView.as_view()),
+
+    # Token generator call
+    path("api/token/", ObtainAuthToken.as_view()),
+
     path("api/budget/expenses/", views.ExpenseListCreateAPIView.as_view()),
     path("api/budget/expenses/<int:pk>/", views.ExpenseDetailUpdateDestroyAPIView.as_view()),
 

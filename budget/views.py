@@ -35,7 +35,7 @@ class SignUpView(APIView):
 # APIView
 class ExpenseListCreateAPIView(APIView):
 
-    authentication_classes = [authentication.BasicAuthentication]
+    authentication_classes = [authentication.TokenAuthentication]
 
     permission_classes = [IsOwnerOrIsAdmin]
 
@@ -64,8 +64,8 @@ class ExpenseListCreateAPIView(APIView):
 
 class ExpenseDetailUpdateDestroyAPIView(APIView):
 
+    authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
-    authentication_classes = [authentication.BasicAuthentication]
 
     def get(self, request, *args, **kwargs):
         
@@ -97,7 +97,7 @@ class ExpenseDetailUpdateDestroyAPIView(APIView):
 
 class ExpenseViewSetView(ViewSet):
 
-    authentication_classes = [authentication.BasicAuthentication]
+    authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [IsOwnerOrIsAdmin]
 
     def list(self, request, *args, **kwargs):
@@ -138,7 +138,7 @@ class ExpenseListCreateView(ListAPIView, CreateAPIView):
 
     queryset = Expense.objects.all()
 
-    authentication_classes = [authentication.BasicAuthentication]
+    authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
@@ -154,7 +154,7 @@ class ExpenseDetailUpdateDestroyView(RetrieveAPIView, UpdateAPIView, DestroyAPIV
 
     queryset = Expense.objects.all()
 
-    authentication_classes = [authentication.BasicAuthentication]
+    authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [IsOwnerOrIsAdmin]
 
 
@@ -165,7 +165,7 @@ class IncomeListCreateView(ListAPIView, CreateAPIView):
 
     queryset = Income.objects.all()
 
-    authentication_classes = [authentication.BasicAuthentication]
+    authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [IsOwnerOrIsAdmin]
 
     def  get_queryset(self):
@@ -181,14 +181,14 @@ class IncomeDetailUpdateDestroyView(RetrieveAPIView, UpdateAPIView, DestroyAPIVi
 
     queryset = Income.objects.all()
 
-    authentication_classes = [authentication.BasicAuthentication]
+    authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [IsOwnerOrIsAdmin]
 
 
 
 class TransactionSummaryView(APIView):
 
-    authentication_classes = [authentication.BasicAuthentication]
+    authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [IsOwnerOrIsAdmin]
 
     def get(self, request, *args, **kwargs):
