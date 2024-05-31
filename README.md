@@ -1,1 +1,1 @@
-Api built in python django rest framework
+Expense Tracker app API built in python and django rest framework
