@@ -151,7 +151,7 @@ class ExpenseListCreateView(ListAPIView, CreateAPIView):
                 owner = self.request.user, 
                 created_date__month=month,
                 created_date__year=year,
-                ) 
+                ).order_by('-id') 
         return Expense.objects.filter(owner=self.request.user)
     
     def perform_create(self, serializer):
@@ -187,7 +187,7 @@ class IncomeListCreateView(ListAPIView, CreateAPIView):
                 owner = self.request.user, 
                 created_date__month=month,
                 created_date__year=year,
-                ) 
+                ).order_by('-id')
         return Income.objects.filter(owner=self.request.user)
     
     def perform_create(self, serializer):
