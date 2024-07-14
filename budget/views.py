@@ -139,9 +139,19 @@ class ExpenseListCreateView(ListAPIView, CreateAPIView):
     queryset = Expense.objects.all()
 
     authentication_classes = [authentication.TokenAuthentication]
+    
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
+
+        if 'month' in self.request.query_params:
+            month = self.request.query_params.get('month')
+            year = self.request.query_params.get('year')
+            return Expense.objects.filter(
+                owner = self.request.user, 
+                created_date__month=month,
+                created_date__year=year,
+                ) 
         return Expense.objects.filter(owner=self.request.user)
     
     def perform_create(self, serializer):
@@ -169,6 +179,15 @@ class IncomeListCreateView(ListAPIView, CreateAPIView):
     permission_classes = [IsOwnerOrIsAdmin]
 
     def  get_queryset(self):
+        # print(self.request.query_params)
+        if 'month' in self.request.query_params:
+            month = self.request.query_params.get('month')
+            year = self.request.query_params.get('year')
+            return Income.objects.filter(
+                owner = self.request.user, 
+                created_date__month=month,
+                created_date__year=year,
+                ) 
         return Income.objects.filter(owner=self.request.user)
     
     def perform_create(self, serializer):
@@ -193,8 +212,13 @@ class TransactionSummaryView(APIView):
 
     def get(self, request, *args, **kwargs):
 
-        cur_year = timezone.now().year
-        cur_month = timezone.now().month
+        # cur_year = timezone.now().year
+        # cur_month = timezone.now().month
+
+        print(request.query_params)
+
+        cur_year = request.query_params.get('year')
+        cur_month = request.query_params.get('month')
 
         all_expenses = Expense.objects.filter(owner=request.user, created_date__year=cur_year, created_date__month=cur_month)
 
@@ -211,9 +235,9 @@ class TransactionSummaryView(APIView):
         savings = total_income - total_expense
 
         summary = {
-                    "expense_total": expense_total, 
+                    "expense_total": total_expense, 
                     "expense_summary": expense_summary, 
-                    "income_total": income_total,
+                    "income_total": total_income,
                     "income_summary": income_summary,
                     "current_month_savings": savings
                     
