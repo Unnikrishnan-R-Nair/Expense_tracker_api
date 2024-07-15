@@ -212,13 +212,14 @@ class TransactionSummaryView(APIView):
 
     def get(self, request, *args, **kwargs):
 
-        # cur_year = timezone.now().year
-        # cur_month = timezone.now().month
+        # print(request.query_params)
 
-        print(request.query_params)
-
-        cur_year = request.query_params.get('year')
-        cur_month = request.query_params.get('month')
+        if 'month' in request.query_params:
+            cur_year = request.query_params.get('year')
+            cur_month = request.query_params.get('month')
+        else:
+            cur_year = timezone.now().year
+            cur_month = timezone.now().month
 
         all_expenses = Expense.objects.filter(owner=request.user, created_date__year=cur_year, created_date__month=cur_month)
 
@@ -228,7 +229,9 @@ class TransactionSummaryView(APIView):
         income_total = all_incomes.values("amount").aggregate(total=Sum("amount"))
 
         expense_summary = list(all_expenses.values("category").annotate(total=Sum("amount")))
+        print(expense_summary)
         income_summary = list(all_incomes.values("category").annotate(total=Sum("amount")))
+        print(income_summary)
 
         total_income = income_total["total"] or 0
         total_expense = expense_total["total"] or 0
